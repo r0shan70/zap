@@ -24,7 +24,7 @@ jobs:
         run: |
           wget https://github.com/zaproxy/zaproxy/releases/download/v2.11.0/ZAP_2.11.0_Core.zip
           unzip ZAP_2.11.0_Core.zip
-          java -jar ZAP_2.11.0/zap-2.11.0.jar -cmd -quickurl https://dev-bo.nephroplus.com/ -quickout /tmp/zap-report.html
+          java -jar ZAP_2.11.0/zap-2.11.0.jar -cmd -quickurl https://prutech.in/ -quickout /tmp/zap-report.html
 
       - name: Upload Report
         uses: actions/upload-artifact@v2
