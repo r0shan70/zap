@@ -1,124 +1,33 @@
-name: ZAP Scanning Workflow
+name: OWASP ZAP Scan
 
 on:
-  push:
-    branches:
-      - main
+  push:  # You can customize this trigger
 
 jobs:
-  zap_scan:
+  security_scan:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Set up Java
-        uses: actions/setup-java@v2
-        with:
-          distribution: 'zulu'
-          java-version: '11'
+    - name: Set up Java
+      uses: actions/setup-java@v2
+      with:
+        distribution: 'adopt'
+        java-version: '11'
 
-      - name: Run ZAP Scan
-        run: |
-          # Replace this command with the actual command to run ZAP scan
-          # Example:
-          # java -jar zap.jar -config config.yaml
+    - name: Download ZAP
+      run: |
+        wget https://github.com/zaproxy/zaproxy/releases/download/v2.10.0/ZAP_2.10.0_Crossplatform.zip
+        unzip ZAP_2.10.0_Crossplatform.zip
 
-      - name: Upload ZAP Report
-        uses: actions/upload-artifact@v2
-        with:
-          name: zap-report
-          path: /zap/wrk/
+    - name: Run ZAP Scan
+      run: |
+        ./ZAP_2.10.0/zap.sh -quickurl https://dev-bo.nephroplus.com/ -quickprogress -cmd
 
-env:
-  contexts:
-    - name: "Automation Context"
-      urls:
-        - "https://dev-bo.nephroplus.com/"
-        - "https://dev-bo.nephroplus.com/bo"
-        - "https://dev-bo.nephroplus.com/keycloak"
-      includePaths:
-        - "https://dev-bo.nephroplus.com/.*"
-        - "https://dev-bo.nephroplus.com/bo.*"
-        - "https://dev-bo.nephroplus.com/keycloak.*"
-      excludePaths: []
-      authentication:
-        method: "form"
-        parameters:
-          loginRequestBody: "username=dev@focaloid.com&password=test&credentialId="
-          loginPageUrl: ""
-          loginRequestUrl: "https://dev-bo.nephroplus.com/keycloak/realms/nephroplus/login-actions/authenticate.*"
-        verification:
-          method: "response"
-          pollFrequency: 60
-          pollUnits: "requests"
-          pollUrl: ""
-          pollPostData: ""
-      sessionManagement:
-        method: "cookie"
-        parameters: {}
-      technology:
-        exclude: []
-  parameters:
-    failOnError: true
-    failOnWarning: false
-    progressToStdout: true
-  vars: {}
-
-jobs:
-  - parameters: {}
-    name: "alertFilter"
-    type: "alertFilter"
-
-  - parameters:
-      scanOnlyInScope: true
-      enableTags: false
-    rules: []
-    name: "passiveScan-config"
-    type: "passiveScan-config"
-
-  - parameters: {}
-    tests:
-      - onFail: "INFO"
-        statistic: "automation.spider.urls.added"
-        site: ""
-        operator: ">="
-        value: 1
-        type: "stats"
-        name: "At least 10 URLs found"
-    name: "spider"
-    type: "spider"
-
-  - parameters:
-      maxDuration: 60
-      maxCrawlDepth: 10
-      numberOfBrowsers: 1
-    tests:
-      - onFail: "INFO"
-        statistic: "spiderAjax.urls.added"
-        site: ""
-        operator: ">="
-        value: 10
-        type: "stats"
-        name: "At least 10 URLs found"
-    name: "spiderAjax"
-    type: "spiderAjax"
-
-  - parameters: {}
-    name: "passiveScan-wait"
-    type: "passiveScan-wait"
-
-  - parameters: {}
-    policyDefinition:
-      rules: []
-    name: "activeScan"
-    type: "activeScan"
-
-  - parameters:
-      template: "risk-confidence-html"
-      reportDir: "/zap/wrk/"
-      reportTitle: "ZAP Scanning Report"
-      reportDescription: ""
-    name: "report"
-    type: "report"
+    - name: Upload ZAP Report
+      uses: actions/upload-artifact@v2
+      with:
+        name: zap-report
+        path: /github/workspace/ZAP_2.10.0/zap-report.html  # Path to the ZAP report generated during the scan
