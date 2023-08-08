@@ -1,33 +1,33 @@
 name: OWASP ZAP Scan
 
 on:
-  push:  # You can customize this trigger
+  push:
+    branches:
+      - main  # Change this to your default branch name
 
 jobs:
-  security_scan:
+  zap_scan:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Set up Java
-      uses: actions/setup-java@v2
-      with:
-        distribution: 'adopt'
-        java-version: '11'
+      - name: Set up Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+          package: 'jre'  # Or 'jre' if you only need the Java Runtime Environment
 
-    - name: Download ZAP
-      run: |
-        wget https://github.com/zaproxy/zaproxy/releases/download/v2.11.0/ZAP_2.11.0_Crossplatform.zip
-        unzip ZAP_2.11.0_Crossplatform.zip
+      - name: Run OWASP ZAP Scan
+        run: |
+          wget https://github.com/zaproxy/zaproxy/releases/download/v2.11.0/ZAP_2.11.0_Core.zip
+          unzip ZAP_2.11.0_Core.zip
+          java -jar ZAP_2.11.0/zap-2.11.0.jar -cmd -quickurl https://dev-bo.nephroplus.com/ -quickout /tmp/zap-report.html
 
-    - name: Run ZAP Scan
-      run: |
-        ./ZAP_2.11.0/zap.sh -quickurl https://dev-bo.nephroplus.com/ -quickprogress -cmd
-
-    - name: Upload ZAP Report
-      uses: actions/upload-artifact@v2
-      with:
-        name: zap-report
-        path: /github/workspace/ZAP_2.11.0/zap-report.html  # Path to the ZAP report generated during the scan
+      - name: Upload Report
+        uses: actions/upload-artifact@v2
+        with:
+          name: zap-report
+          path: /tmp/zap-report.html
