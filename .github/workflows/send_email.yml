@@ -24,8 +24,8 @@ jobs:
     - name: Send Email
       run: node send_email.js
       env:
-        AWS_ACCESS_KEY_ID: ${{ AKIAQ5OENXUUTLYD4Z5K }}
-        AWS_SECRET_ACCESS_KEY: ${{ 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 }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AKIAQ5OENXUUTLYD4Z5K }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.yQpxkeHicwUbKIY/ZFEyNUAKZVtfxU+7iV/xwqLh }}
         AWS_REGION: eu-north-1  # Change to your desired AWS region
         RECIPIENT_EMAIL: devopstesting539.com
         SENDER_EMAIL: devopstesting539.com
