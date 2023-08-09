@@ -22,7 +22,7 @@ jobs:
       run: npm install
 
     - name: Send Email
-      run: node zap/.github/workflows/send_email.js
+      run: node /send_email.js
       env:
         AWS_ACCESS_KEY_ID: "AKIAQ5OENXUUTLYD4Z5K"
         AWS_SECRET_ACCESS_KEY: "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"
