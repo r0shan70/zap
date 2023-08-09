@@ -1,30 +1,44 @@
 const AWS = require('aws-sdk');
 
-const SES = new AWS.SES({
-  region: process.env.AWS_REGION
+ 
+
+AWS.config.update({
+  accessKeyId: process.env.AKIAQ5OENXUUTLYD4Z5K,
+  secretAccessKey: process.env.yQpxkeHicwUbKIY/ZFEyNUAKZVtfxU+7iV/xwqLh,
+  region: 'eu-northt-1', // Change to your desired AWS region
 });
+
+ 
+
+const ses = new AWS.SES({ apiVersion: '2010-12-01' });
+
+ 
 
 const params = {
   Destination: {
-    ToAddresses: [process.env.RECIPIENT_EMAIL]
+    ToAddresses: [process.env.TO_EMAIL],
   },
   Message: {
     Body: {
       Text: {
-        Data: 'Hello from AWS SES!'
-      }
+        Charset: 'UTF-8',
+        Data: 'This is the email body.',
+      },
     },
     Subject: {
-      Data: 'Test Email'
-    }
+      Charset: 'UTF-8',
+      Data: 'Email Subject',
+    },
   },
-  Source: process.env.SENDER_EMAIL
+  Source: process.env.FROM_EMAIL,
 };
 
-SES.sendEmail(params, (err, data) => {
+ 
+
+ses.sendEmail(params, (err, data) => {
   if (err) {
     console.error('Error sending email:', err);
   } else {
-    console.log('Email sent:', data);
+    console.log('Email sent successfully:', data);
   }
 });
