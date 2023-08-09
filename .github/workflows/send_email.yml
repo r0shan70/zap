@@ -29,3 +29,4 @@ jobs:
         AWS_REGION: eu-north-1  # Change to your desired AWS region
         RECIPIENT_EMAIL: devopstesting539.com
         SENDER_EMAIL: devopstesting539.com
+        
