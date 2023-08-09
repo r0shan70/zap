@@ -1,41 +1,29 @@
 name: Send Email via AWS SES
 
- 
-
 on:
   push:
     branches:
       - main
 
- 
-
 jobs:
   send_email:
     runs-on: ubuntu-latest
-
- 
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
- 
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
         with:
-          node-version: '14'
+          php-version: '7.4' # Choose the appropriate PHP version
 
- 
-
-      - name: Install dependencies
-        run: npm install aws-sdk
-
- 
+      - name: Install AWS SDK for PHP
+        run: composer require aws/aws-sdk-php
 
       - name: Send Email
         run: |
-          node send-email.js
+          php send-email.php
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
