@@ -13,21 +13,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Java
-        uses: actions/setup-java@v2
-        with:
-          java-version: '11'
-          distribution: 'adopt'
-          package: 'jre'  # Or 'jre' if you only need the Java Runtime Environment
-
       - name: Run OWASP ZAP Scan
         run: |
-          wget https://github.com/zaproxy/zaproxy/releases/download/v2.11.0/ZAP_2.11.0_Core.zip
-          unzip ZAP_2.11.0_Core.zip
-          java -jar ZAP_2.11.0/zap-2.11.0.jar -cmd -quickurl https://prutech.in/ -quickout /tmp/zap-report.html
+          docker pull ghcr.io/zaproxy/zaproxy:stable
+          docker run -v $(pwd):/zap/wrk/:rw -t owasp/zap2docker-stable zap.sh -cmd -autorun /zap/wrk/zap.yml
 
       - name: Upload Report
         uses: actions/upload-artifact@v2
         with:
           name: zap-report
-          path: /tmp/zap-report.html
+          path: /zap/wrk/zap-report.html
