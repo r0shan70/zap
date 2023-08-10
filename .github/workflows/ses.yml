@@ -24,7 +24,7 @@ jobs:
 
     - name: Run Python script to send email
       run: |
-        python ./send_email.py
+        python send_email.py
       env:
         AWS_ACCESS_KEY_ID: AKIAQ5OENXUUTLYD4Z5K
         AWS_SECRET_ACCESS_KEY: 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
