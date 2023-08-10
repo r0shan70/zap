@@ -2,10 +2,14 @@ name: OWASP ZAP Scan
 
  
 
+ 
+
 on:
   push:
     branches:
       - main  # Change this to your default branch name
+
+
 
  
 
@@ -15,9 +19,13 @@ jobs:
 
  
 
+ 
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+ 
 
       - name: Set up permissions
         run: |
@@ -25,22 +33,32 @@ jobs:
 
  
 
+      - name: Create ZAP directory
+        run: | 
+         sudo chmod -R 777 $(pwd)
+         sudo mkdir -p /zap/wrk/
+
+ 
+
+ 
+
       - name: Run OWASP ZAP Scan
         run: |
           docker pull ghcr.io/zaproxy/zaproxy:stable
-          docker run -v $(pwd):/zap/wrk/:rw -t owasp/zap2docker-stable zap.sh -cmd -autorun /zap/wrk/zap.yaml
+          docker run -v $(pwd):/zap/wrk/:rw -t owasp/zap2docker-stable zap.sh -cmd -autorun /zap/wrk/zap.yml || true
           pwd 
           ls -la
-          sudo chmod -R 777 /zap/wrk/*
+          zip -r zap_report.zip *.html
 
-          # Zip the ZAP Report
-          zip -j /zap/wrk/zap_report.zip /zap/wrk/2023-08-10-ZAP-Report-dev-bo.nephroplus.com.html
 
-          # Upload Zipped Report as an artifact
-          echo "::set-output name=artifact_path::/zap/wrk/zap_report.zip"
+ 
 
-      - name: Upload Zipped Report
+ 
+
+ 
+
+      - name: Upload Report
         uses: actions/upload-artifact@v2
         with:
-          name: zap-report-zip
-          path: ${{ steps.zap_scan.outputs.artifact_path }}
+          name: zap-report
+          path: /home/runner/work/workflows/workflows/zap_report.zip
