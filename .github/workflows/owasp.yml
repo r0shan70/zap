@@ -1,32 +1,39 @@
-
 name: OWASP ZAP Scan
+
+ 
 
 on:
   push:
     branches:
       - main  # Change this to your default branch name
 
+ 
+
 jobs:
   zap_scan:
     runs-on: ubuntu-latest
 
+ 
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        
+
       - name: Set up permissions
         run: |
           sudo chmod -R 777 $(pwd)
+
+ 
+
       - name: Run OWASP ZAP Scan
         run: |
           docker pull ghcr.io/zaproxy/zaproxy:stable
-          docker run -v $(pwd):/zap/wrk/:rw -t owasp/zap2docker-stable zap.sh -cmd -autorun /zap/wrk/zap.yml || true
-          pwd 
-          ls -la
-          zip -r security-scan.zip(2023-08-10-ZAP-Report-dev-bo.nephroplus.com.html)
+          docker run -v $(pwd):/zap/wrk/:rw -t owasp/zap2docker-stable zap.sh -cmd -autorun /zap/wrk/zap.yml
+
+ 
 
       - name: Upload Report
         uses: actions/upload-artifact@v2
         with:
           name: zap-report
-          path: ./home/runner/work/workflows/workflows/security-scan.zip
+          path: /zap/wrk/zap-report.html
