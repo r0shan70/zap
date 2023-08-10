@@ -28,18 +28,28 @@ jobs:
           name: zap-report
           path: /zap/wrk/2023-08-09-ZAP-Report-dev-bo.nephroplus.com.html
 
+            - name: Set up AWS credentials
+        env:
+          AWS_ACCESS_KEY_ID: AKIAXPMPAXWGYVKHL7HF
+          AWS_SECRET_ACCESS_KEY: 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
+          AWS_DEFAULT_REGION: us-west-1
+        run: |
+          aws configure set aws_access_key_id AKIAXPMPAXWGYVKHL7HF
+          aws configure set aws_secret_access_key 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
+          aws configure set default.region us-west-1
+
       - name: Send Email with Attachment
-  run: |
-    # Create a temporary directory to store the attachment
-    mkdir temp_attachment
+        run: |
+          # Create a temporary directory to store the attachment
+          mkdir temp_attachment
 
-    # Copy the generated artifact to the temp_attachment directory
-    cp -r zap/work/* temp_attachment/
+          # Copy the generated artifact to the temp_attachment directory
+          cp -r zap/work/* temp_attachment/
 
-    # Send the email with the attachment
-    aws ses send-email \
-      --from "hellofabin@gmail.com" \
-      --destination "ToAddresses=hellofabin@gmail.com" \
-      --message "Subject={Data=Your Subject},Body={Text={Data=test to send a sample image}}" \
-      --attachments file://temp_attachment/2023-08-09-ZAP-Report-dev-bo.nephroplus.com.html
+          # Send the email with the attachment
+          aws ses send-email \
+            --from "hellofabin@gmail.com" \
+            --destination "ToAddresses=hellofabin@gmail.com" \
+            --message "Subject={Data=Your Subject},Body={Text={Data=test to send a sample image}}" \
+            --attachments file://temp_attachment/2023-08-09-ZAP-Report-dev-bo.nephroplus.com.html
       
