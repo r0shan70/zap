@@ -23,7 +23,7 @@ region = 'eu-north-1'  # Change to your desired AWS region
 # Set email parameters
 sender_email = 'roshanofficial27@gmail.com'
 recipient_email = 'devopstesting539@gmail.com'
-cc_recipients = ['cc_email1@example.com', 'cc_email2@example.com']  # Add CC email addresses here
+cc_recipients = ['hellofabin@gmail.com.com', 'mathewrijo23@gmail.com']  # Add CC email addresses here
 subject = 'Test email with attachment'
 body_text = 'This is a email with an attachment of OWASP ZAP report.'
 body_html = '<html><body><h1>This is a email with an attachment of OWASP ZAP report.</h1></body></html>'
