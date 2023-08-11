@@ -58,3 +58,8 @@ jobs:
           AWS_ACCESS_KEY_ID: AKIAQ5OENXUUTLYD4Z5K
           AWS_SECRET_ACCESS_KEY: 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
 
+      - name: Upload Report
+        uses: actions/upload-artifact@v2
+        with:
+          name: zap-report
+          path: /home/runner/work/zap/zap/zap_report.zip
