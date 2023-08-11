@@ -51,7 +51,7 @@ jobs:
           docker run -v $(pwd):/zap/wrk/:rw -t owasp/zap2docker-stable zap.sh -cmd -autorun /zap/wrk/zap.yaml || true
           pwd 
           ls -la
-          zip -r zap_report.zip *
+          zip -r zap_report.zip *dev-bo.nephroplus.com*
           ls -lahtr
           python send_email.py
         env:
