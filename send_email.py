@@ -49,7 +49,7 @@ msg['From'] = sender_email
 msg['To'] = recipient_email
 
 # Add the recipients to the To field
-msg['To'] = ', '.join(recipient_emails)
+msg['To'] = ', '.join(recipient_email)
 
 # Add the recipients to the CC field if there are any
 if cc_emails:
