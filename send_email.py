@@ -77,7 +77,7 @@ raw_message = msg.as_string()
 try:
     response = ses.send_raw_email(
         Source=sender_email,
-        Destinations=recipient_emails + cc_emails if cc_emails else [],  # Combine the primary recipients and cc recipients
+        Destinations=recipient_email + cc_emails if cc_emails else [],  # Combine the primary recipients and cc recipients
         RawMessage={'Data': raw_message}
     )
     print("Email with attachment sent successfully!")
