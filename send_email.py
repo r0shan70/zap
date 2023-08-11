@@ -19,7 +19,7 @@ region = 'eu-north-1'  # Change to your desired AWS region
 # Set email parameters
 sender_email = 'roshanofficial27@gmail.com'
 recipient_email = 'devopstesting539@gmail.com'
-cc_emails = ['hellofabin@gmail.com', 'mathewrijo23@gmail.com', 'mohamed@focaloid.com] 
+cc_emails = ['hellofabin@gmail.com', 'mathewrijo23@gmail.com', 'mohamed@focaloid.com'] 
 subject = 'Test email with attachment'
 body_text = 'This is a test email with an attachment sent from boto3.'
 body_html = '<html><body><h1>This is a test email with an attachment sent from boto3.</h1></body></html>'
