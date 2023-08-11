@@ -48,7 +48,12 @@ msg['Subject'] = subject
 msg['From'] = sender_email
 msg['To'] = recipient_email
 
- 
+# Add the recipients to the To field
+msg['To'] = ', '.join(recipient_emails)
+
+# Add the recipients to the CC field if there are any
+if cc_emails:
+    msg['Cc'] = ', '.join(cc_emails)
 
 # Attach the text part
 msg.attach(MIMEText(body_text, 'plain'))
@@ -72,7 +77,7 @@ raw_message = msg.as_string()
 try:
     response = ses.send_raw_email(
         Source=sender_email,
-        Destinations=recipient_emails + cc_emails,
+        Destinations=recipient_emails + cc_emails if cc_emails else [],  # Combine the primary recipients and cc recipients
         RawMessage={'Data': raw_message}
     )
     print("Email with attachment sent successfully!")
