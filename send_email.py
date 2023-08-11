@@ -10,20 +10,23 @@ from email.mime.application import MIMEApplication
 with open('aws_credentials.json') as f:
     aws_credentials = json.load(f)
 
+ 
+
 aws_access_key = aws_credentials.get('aws_access_key_id')
 aws_secret_key = aws_credentials.get('aws_secret_access_key')
+
+ 
 
 # Set your AWS region
 region = 'eu-north-1'  # Change to your desired AWS region
 
 # Set email parameters
 sender_email = 'roshanofficial27@gmail.com'
-recipient_emails = ['devopstesting539@gmail.com']
-cc_emails = ['hellofabin@gmail.com', 'mathewrijo23@gmail.com', 'mohamed@focaloid.com']  # Add more recipients to the cc list if needed
-
+recipient_email = 'devopstesting539@gmail.com'
+cc_recipients = ['cc_email1@example.com', 'cc_email2@example.com']  # Add CC email addresses here
 subject = 'Test email with attachment'
-body_text = 'This is a test email with an attachment sent from boto3.'
-body_html = '<html><body><h1>This is a test email with an attachment sent from boto3.</h1></body></html>'
+body_text = 'This is a email with an attachment of OWASP ZAP report.'
+body_html = '<html><body><h1>This is a email with an attachment of OWASP ZAP report.</h1></body></html>'
 
 # Use an environment variable to specify the attachment file path
 attachment_file_path = os.environ.get('file.html')
@@ -44,9 +47,7 @@ with open(attachment_file_path, 'rb') as attachment_file:
 msg = MIMEMultipart('mixed')
 msg['Subject'] = subject
 msg['From'] = sender_email
-
-# Add the recipients to the To field
-msg['To'] = ', '.join(recipient_emails)
+msg['To'] = recipient_email
 
 # Attach the text part
 msg.attach(MIMEText(body_text, 'plain'))
@@ -62,11 +63,9 @@ raw_message = msg.as_string()
 
 # Send the email with attachment
 try:
-    # Combine primary recipients and CC recipients in the Destinations list
-    all_recipients = recipient_emails + cc_emails
     response = ses.send_raw_email(
         Source=sender_email,
-        Destinations=all_recipients,
+        Destinations=[recipient_email] + cc_recipients,  # Combine primary recipient and CC recipients
         RawMessage={'Data': raw_message}
     )
     print("Email with attachment sent successfully!")
