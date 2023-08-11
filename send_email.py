@@ -76,7 +76,7 @@ raw_message = msg.as_string()
 # Send the email with attachment
 try:
     # Combine primary recipients and CC recipients in the Destinations list
-    all_recipients = recipient_emails + cc_emails
+    all_recipients = recipient_email + cc_emails
     response = ses.send_raw_email(
         Source=sender_email,
         Destinations=all_recipients,
