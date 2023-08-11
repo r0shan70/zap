@@ -26,7 +26,7 @@ body_text = 'This is a test email with an attachment sent from boto3.'
 body_html = '<html><body><h1>This is a test email with an attachment sent from boto3.</h1></body></html>'
 
 # Use an environment variable to specify the attachment file path
-attachment_file_path = os.environ.get('/home/runner/work/zap/zap/', 'zap_report.zip')
+attachment_file_path = os.environ.get('file.html')
 
 # Ensure the specified file exists
 if not os.path.exists(attachment_file_path):
