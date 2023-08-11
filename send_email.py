@@ -1,11 +1,9 @@
 import boto3
 from botocore.exceptions import NoCredentialsError
 import os
-import mimetypes
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.application import MIMEApplication
-import zipfile
 
 # Set your AWS credentials
 aws_access_key = 'AKIAQ5OENXUUTLYD4Z5K'
@@ -16,14 +14,23 @@ region = 'eu-north-1'  # Change to your desired AWS region
 sender_email = 'roshanofficial27@gmail.com'
 recipient_email = 'devopstesting539@gmail.com'
 subject = 'Test email with attachment'
-body_text = 'This is a test email with attachments sent from boto3.'
-body_html = '<html><body><h1>This is a test email with attachments sent from boto3.</h1></body></html>'
+body_text = 'This is a test email with an attachment sent from boto3.'
+body_html = '<html><body><h1>This is a test email with an attachment sent from boto3.</h1></body></html>'
 
-# Path to the zip file containing the files you want to attach
-zip_file_path = '/home/runner/work/zap/zap/zap_report.zip'
+# Use an environment variable to specify the attachment file path
+attachment_file_path = os.environ.get('/home/runner/work/zap/zap/', 'zap_report.zip')
+
+# Ensure the specified file exists
+if not os.path.exists(attachment_file_path):
+    print("Attachment file not found:", attachment_file_path)
+    exit(1)
 
 # Connect to Amazon SES
 ses = boto3.client('ses', region_name=region, aws_access_key_id=aws_access_key, aws_secret_access_key=aws_secret_key)
+
+# Read the content of the attachment file
+with open(attachment_file_path, 'rb') as attachment_file:
+    attachment_content = attachment_file.read()
 
 # Create a MIME Multipart message
 msg = MIMEMultipart('mixed')
@@ -35,31 +42,22 @@ msg['To'] = recipient_email
 msg.attach(MIMEText(body_text, 'plain'))
 msg.attach(MIMEText(body_html, 'html'))
 
-# Read the contents of the zip file and attach each file
-try:
-    with zipfile.ZipFile(zip_file_path, 'r') as zip_file:
-        for file_name in zip_file.namelist():
-            with zip_file.open(file_name) as attachment_file:
-                attachment_content = attachment_file.read()
-                attachment_mime = MIMEApplication(attachment_content)
-                attachment_mime.add_header('Content-Disposition', 'attachment', filename=os.path.basename(file_name))
-                msg.attach(attachment_mime)
-except FileNotFoundError:
-    print(f"Zip file not found: {zip_file_path}")
-except Exception as e:
-    print("An error occurred:", str(e))
+# Attach the file
+attachment_mime = MIMEApplication(attachment_content)
+attachment_mime.add_header('Content-Disposition', 'attachment', filename=os.path.basename(attachment_file_path))
+msg.attach(attachment_mime)
 
 # Convert the message to a string
 raw_message = msg.as_string()
 
-# Send the email with attachments
+# Send the email with attachment
 try:
     response = ses.send_raw_email(
         Source=sender_email,
         Destinations=[recipient_email],
         RawMessage={'Data': raw_message}
     )
-    print("Email with attachments sent successfully!")
+    print("Email with attachment sent successfully!")
 except NoCredentialsError:
     print("AWS credentials not found, or incorrect.")
 except Exception as e:
