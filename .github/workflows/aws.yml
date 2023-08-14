@@ -3,7 +3,7 @@ name: Send Email with Attachment
 on:
   push:
     branches:
-      - main  # Adjust this to the appropriate branch
+      - roshanowasp  # Adjust this to the appropriate branch
 
 jobs:
   send_email:
