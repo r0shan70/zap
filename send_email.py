@@ -22,7 +22,7 @@ region = 'eu-north-1'  # Change to your desired AWS region
 # Set email parameters
 sender_email = 'roshanofficial27@gmail.com'
 recipient_email = 'devopstesting539@gmail.com'
-cc_email = ['hellofabin@gmail.com', 'mathewrijo23@gmail.com']  # Add more CC recipients as needed
+cc_emails = ['hellofabin@gmail.com', 'mathewrijo23@gmail.com']  # Add more CC recipients as needed
 subject = 'Test email with attachment'
 body_text = 'This is a test email with an attachment sent from boto3.'
 body_html = '<html><body><h1>This is a test email with an attachment sent from boto3.</h1></body></html>'
@@ -60,7 +60,7 @@ raw_message = msg.as_string()
 try:
     response = ses.send_raw_email(
         Source=sender_email,
-        Destinations=[recipient_email],
+        Destinations=[recipient_email] + cc_emails,
         RawMessage={'Data': raw_message}
     )
     print("Email with attachment sent successfully!")
