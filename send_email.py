@@ -25,9 +25,9 @@ region = 'eu-north-1'  # Change to your desired AWS region
 sender_email = 'roshanofficial27@gmail.com'
 recipient_email = 'devopstesting539@gmail.com'
 cc_emails = ['hellofabin@gmail.com', 'mathewrijo23@gmail.com']  # Add more CC recipients as needed
-subject = 'Test email with attachment'
-body_text = 'This is a test email with an attachment sent from boto3.'
-body_html = '<html><body><h1>This is a test email with an attachment sent from boto3.</h1></body></html>'
+subject = 'OWASP ZAP Report for Nephroplus'
+body_text = 'OWASP ZAP Report for Nephroplus.'
+body_html = '<html><body><h1>OWASP ZAP Report for Nephroplus.</h1></body></html>'
 
 # Use an environment variable to specify the attachment file path
 attachment_file_path = os.environ.get('/home/runner/work/zap/zap/', 'zap_report.zip')
