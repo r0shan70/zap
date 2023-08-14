@@ -50,7 +50,7 @@ msg['Subject'] = subject
 msg['From'] = sender_email
 
 # Add the recipients to the To field
-msg['To'] = ', '.join(recipient_email)
+msg['To'] = recipient_email
 msg['Cc'] = ', '.join(cc_emails)  # Adding CC recipients
 
 # Attach the text part
