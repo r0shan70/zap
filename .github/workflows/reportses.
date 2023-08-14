@@ -7,7 +7,7 @@ name: OWASP ZAP Scan
 on:
   push:
     branches:
-      - main  # Change this to your default branch name
+      - roshanowasp  # Change this to your default branch name
 
 
 
