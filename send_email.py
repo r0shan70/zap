@@ -44,7 +44,7 @@ msg = MIMEMultipart('mixed')
 msg['Subject'] = subject
 msg['From'] = sender_email
 msg['To'] = recipient_email
-msg['Cc'] = ', '.join(cc_email)  # Adding CC recipients
+msg['Cc'] = ', '.join(cc_emails)  # Adding CC recipients
 
 # Attach the text part
 msg.attach(MIMEText(body_text, 'plain'))
