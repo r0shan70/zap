@@ -4,6 +4,8 @@ import os
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.application import MIMEApplication
+import shutil
+import json
 
 # Read AWS credentials from the file
 with open('aws_credentials.json') as f:
